@@ -1,0 +1,61 @@
+Programs:
+
+[accumulate]
+IN: 2^dst * 3^src * 5
+OUT: 2^(dst + src) * 3^src
+
+[accumulate_and_destroy]
+IN: 2^dst * 3^src * 5
+OUT: 2^(dst + src)
+
+[add]
+IN: 2^dst * 3^x * 5^y * 7
+OOUT: 2^(x + y) * 3^x * 5^y
+
+[copy]
+IN: 2^dst * 3^src * 5
+OUT: 2^src * 3^src
+
+[increment_1]
+IN: 2^x * 3
+OUT: 2^(x+1)
+
+[increment_2]
+IN: 2^x * 3
+OUT: 2^(x+2)
+
+[increment_5]
+IN: 2^x * 3
+OUT: 2^(x+5)
+
+[goto]
+IN: 2
+OUT: 3
+
+[clear]
+IN: 2^x * 3
+OUT: 2^0
+
+[euclidian_division]
+IN: 2^n * 3^d * 5^o1 * 7^o2 * 11
+OUT: 2^n * 3^d * 5^q * 7^r
+
+[multiply]
+IN: 2^x * 3^y * 5^o * 7
+OUT: 2^x * 3^y * 5^(xy)
+
+[multiply_on]
+IN: 2^dst * 3^src * 5
+OUT: 2^(dst * src) * 3^src
+
+[sum]
+IN: 2^i * 5
+OUT: 3^(1 + 2 + ... + i)
+
+[fibonacci]
+IN: 2^n * 3^o * 5
+OUT: 2^0 * 3^fib(n)
+
+[collatz]
+IN: 2^n * 3^o * 5
+OUT: 3^collatz(n)

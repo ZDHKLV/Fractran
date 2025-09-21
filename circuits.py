@@ -316,4 +316,4 @@ if __name__ == "__main__":
             for num, den in program:
                 file.write(f"{num} / {den}\n")
     else:
-        print("Retry with a filename as argument (= the output).")
+        print("Retry with a filename as argument (= the output). This file will be overwritten!")

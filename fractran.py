@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 from typing import Callable
+from collections import Counter
+import primes
 import pretty
 import sys
 
 type Fraction = tuple[int, int]
 
-def run(program: list[Fraction],
-        n: int,
-        action: Callable[[int], None] = lambda _ : ()):
+def evaluate(program: list[Fraction],
+             n: int,
+             action: Callable[[int], None] = lambda _ : ()) -> int:
 
     while True:
         action(n)
@@ -19,18 +21,46 @@ def run(program: list[Fraction],
         else:
             return n
 
-def run_from_file(filename: str,
-                  n: int,
-                  action: Callable[[int], None] = lambda _ : ()):
+def evaluate2(program: list[Fraction],
+              n: int,
+              action: Callable[[Counter], None] = lambda _ : ()) -> int:
 
+    registers = Counter(primes.prime_factors(n))
+    counters = [
+        (Counter(primes.prime_factors(num)), Counter(primes.prime_factors(den)))
+        for num, den in program
+    ]
+
+    while True:
+        action(registers)
+        for c_num, c_den in counters:
+
+            for k_den in c_den:
+                if registers[k_den] < c_den[k_den]:
+                    break
+            else:
+                for k_den in c_den:
+                    registers[k_den] -= c_den[k_den]
+
+                for k_num in c_num:
+                    registers[k_num] += c_num[k_num]
+
+                break
+        else:
+            output = 1
+            for key in registers:
+                output *= (key**registers[key])
+            return output
+
+def program_from_file(filename: str) -> list[Fraction]:
     program = []
 
     with open(filename, "r", encoding="utf-8") as file:
             for line in file:
                 num, den = map(int, line.replace(" ", "").split("/"))
                 program.append((num, den))
-
-    return run(program, n, action)
+    
+    return program
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
@@ -39,11 +69,11 @@ if __name__ == "__main__":
         print("Input:")
         n = pretty.pretty_prime_factors_to_int(input())
 
-        debug = (len(sys.argv) >= 3 and sys.argv[2] == "-D")
+        debug = ("-D" in sys.argv)
 
         if debug:
             names = {}
-            for i in range(3, len(sys.argv)):
+            for i in range(sys.argv.index("-D"), len(sys.argv)):
                 a, b = sys.argv[i].split("=")
                 names[int(b)] = a
 
@@ -51,7 +81,10 @@ if __name__ == "__main__":
         else:
             action = lambda _ : ()
 
-        output = run_from_file(filename, n, action)
+        if "-O" not in sys.argv:
+            output = evaluate(program_from_file(filename), n, action)
+        else:
+            output = evaluate2(program_from_file(filename), n)
 
         if output == 1:
             print(1)

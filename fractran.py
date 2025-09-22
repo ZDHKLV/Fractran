@@ -11,6 +11,13 @@ type Fraction = tuple[int, int]
 def evaluate(program: list[Fraction],
              n: int,
              action: Callable[[int], None] = lambda _ : ()) -> int:
+    """
+    Default interpreter for a fractran program.
+    It "simulates" it without any clever trick, simply by following the rules.
+
+    The action parameter (by default the function doing nothing) is an arbitrary function
+    which can (for instance) be used to debug a fractran program.
+    """
 
     while True:
         action(n)
@@ -24,6 +31,17 @@ def evaluate(program: list[Fraction],
 def evaluate2(program: list[Fraction],
               n: int,
               action: Callable[[Counter], None] = lambda _ : ()) -> int:
+    """
+    Another interpreter for a fractran program.
+    It views the input n as well as the fractions as their decomposition in prime factors
+    and uses them to maintain registers, hence mimicking some kind of CPU.
+
+    It is slower on "simple programs with simple inputs" because we are dealing with
+    more complex datastructures (hashmaps) instead of O(1) arithmetic operations.
+    However, this becomes way faster than the other version whenever the programs are trickier,
+    and when n becomes very large ; because at that point the "O(1) arithmetic operations"
+    proposition becomes false.
+    """
 
     registers = Counter(primes.prime_factors(n))
     counters = [
@@ -53,6 +71,7 @@ def evaluate2(program: list[Fraction],
             return output
 
 def program_from_file(filename: str) -> list[Fraction]:
+    """Reads a fractran file (which contains only fractions of integers) and returns the fractions"""
     program = []
 
     with open(filename, "r", encoding="utf-8") as file:
@@ -63,6 +82,22 @@ def program_from_file(filename: str) -> list[Fraction]:
     return program
 
 if __name__ == "__main__":
+    """
+    How to run this program:
+
+    1) ./fractran.py <filename>        <- uses the main interpreter
+    2) ./fractran.py <filename> -E     <- uses the secondary interpreter
+    3) ./fractran.py <filename> -D     <- uses the debug mode (main interpreter unless -E is written before -D)
+    
+    Other arguments can be writter after -D to name some prime integers
+    which can be useful if you "know" a fractran program and would like to debug it.
+
+    For instance,
+    4) ./fractran.py <filename> -D a=2 b=3 c=5
+    activates the debug mode and in the debug prints
+    you can see the variables "2" renamed to "a" instead of "v2" (and so on).
+    """
+
     if len(sys.argv) >= 2:
         filename = sys.argv[1]
 

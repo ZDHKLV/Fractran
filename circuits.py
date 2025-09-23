@@ -103,6 +103,13 @@ def increment(begin: State, end: State, x: Var) -> list[Fraction]:
     """ [begin] (x) -> [end] (x+1) """
     return increment_times(begin, end, x, 1)
 
+def decrement(begin: State, end: State, x: Var) -> list[Fraction]:
+    """ [begin] (x) -> [end] (max(0, x-1)) """
+    return [
+        (end, x * begin),
+        (end, begin)
+    ]
+
 def branch_then_decrement(begin: State,
                           end_true: State,
                           end_false: State,
@@ -123,6 +130,20 @@ def branch(begin: State,
         (E, x * begin),
         (end_false, begin),
         (x * end_true, E)
+    ]
+
+def branch_gt(begin: State,
+              end_true: State,
+              end_false: State,
+              x: Var,
+              y: Var) -> list[Fraction]:
+    """ [begin] (x, y) -> [end_true] (x-y-1 , 0) if x > y and [end_false] (0, y-x) otherwise """
+    E = unique()
+    return [
+        (E, x * y * begin),
+        (begin, E),
+        (end_true, x * begin),
+        (end_false, begin)
     ]
 
 def goto(begin: State, end: State) -> list[Fraction]:
@@ -295,6 +316,32 @@ def automata_collatz(begin: State,
 
     return [ f for fs in automata for f in fs ]
 
+def automata_sqrt(begin: State,
+                  end: State,
+                  n: Var,
+                  o: Var) -> list[Fraction]:
+    """ [begin] (n, o) -> [end] (n, floor(sqrt(n))) """
+    A, B = begin, end
+    E = uniques(8)
+    res = o
+    t, m = uniques(2)
+
+    automata = [
+        clear(A, E[0], res),
+        increment(E[0], E[1], res),
+        copy(E[1], E[2], t, res),
+        copy(E[2], E[3], m, n),
+        multiply_on(E[3], E[4], t, t),
+        decrement(E[4], E[5], t),
+        branch_gt(E[5], E[6], E[7], m, t),
+        increment(E[6], E[1], res),
+        decrement(E[7], B, res),
+        destroy(t),
+        destroy(m)
+    ]
+
+    return [ f for fs in automata for f in fs ]
+
 def make_sum():
     i, o, A, B = uniques(4)
     return automata_sum(A, B, i, o) + destroy(B)
@@ -307,10 +354,14 @@ def make_collatz():
     n, o, A, B = uniques(4)
     return automata_collatz(A, B, n, o) + destroy(B)
 
+def make_sqrt():
+    n, o, A, B = uniques(4)
+    return automata_sqrt(A, B, n, o) + destroy(B)
+
 if __name__ == "__main__":
     if len(sys.argv) == 2:
         outfile = sys.argv[1]
-        program = make_collatz()
+        program = make_sqrt()
 
         with open(outfile, "w", encoding="utf-8") as file:
             for num, den in program:

@@ -1,0 +1,20 @@
+image: python:3.9
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+    - python tests.py
+  after_script:
+    - |
+      if [ $? -eq 0 ]; then
+        echo "Tests passed!"
+      else
+        echo "Tests failed!"
+        exit 1
+      fi
+  artifacts:
+    reports:
+      junit: test_results/results.xml

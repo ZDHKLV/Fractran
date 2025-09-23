@@ -62,12 +62,12 @@ def run_tests(opt: bool = False):
             inp = 2**x * 3
             expected = 2**(x+i)
             test(f"increment_{i}", inp, expected, opt)
-
-    # branch_then_decrement
-    # How?
-
-    # branch
-    # How?
+    
+    # decrement
+    for x in range(10):
+        inp = 2**x * 3
+        expected = 2**(max(0, x-1))
+        test(f"decrement", inp, expected, opt)
 
     # goto
     test("goto", 2**1, 3**1, opt)

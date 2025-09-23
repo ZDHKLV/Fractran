@@ -28,6 +28,10 @@ OUT: 2^(x+2)
 IN: 2^x * 3
 OUT: 2^(x+5)
 
+[decrement]
+IN: 2^x * 3
+OUT: 2^(max(0, x-1))
+
 [goto]
 IN: 2
 OUT: 3

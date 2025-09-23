@@ -21,7 +21,7 @@ def test(prog: str, inp: int, expected: int, opt: bool = False):
         print(f"Input: {pretty.int_to_pretty_registers(inp)}")
         print(f"Expected outcome: {pretty.int_to_pretty_registers(expected)}")
         print(f"Received outcome: {pretty.int_to_pretty_registers(out)}")
-        exit(0)
+        exit(1)
 
     COUNT += 1
 

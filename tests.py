@@ -145,6 +145,14 @@ def run_tests(opt: bool = False):
             inp = 2**n * 3**o * 5
             expected = 3**collatz(n)
             test("collatz", inp, expected, opt)
+    
+    # sqrt
+
+    for n in range(20):
+        for o in range(3):
+            inp = 2**n * 3**o * 5
+            expected = 2**n * 3**(int(n**0.5))
+            test("sqrt", inp, expected, opt)
 
 if __name__ == "__main__":
     start_1 = time()

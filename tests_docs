@@ -50,7 +50,7 @@ OUT: 2^(dst * src) * 3^src
 
 [sum]
 IN: 2^i * 5
-OUT: 3^(1 + 2 + ... + i)
+OUT: 2^0 * 3^(1 + 2 + ... + i)
 
 [fibonacci]
 IN: 2^n * 3^o * 5
@@ -58,4 +58,8 @@ OUT: 2^0 * 3^fib(n)
 
 [collatz]
 IN: 2^n * 3^o * 5
-OUT: 3^collatz(n)
+OUT: 2^0 * 3^collatz(n)
+
+[sqrt]
+IN: 2^n * 3^o * 5
+OUT: 2^n * 3^floor(sqrt(n))

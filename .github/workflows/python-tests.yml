@@ -21,9 +21,15 @@ jobs:
     - name: Run tests
       run: |
         python tests.py
+        if [ $? -eq 0 ]; then
+          echo "Tests passed!"
+        else
+          echo "Tests failed!"
+          exit 1
+        fi
       
-    - name: Check test result
-      if: ${{ failure() }}
-      run: |
-        echo "Tests failed. Please check the output."
-        exit 1
+    # - name: Check test result
+    #   if: ${{ failure() }}
+    #   run: |
+    #     echo "Tests failed. Please check the output."
+    #     exit 1

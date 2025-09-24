@@ -382,6 +382,14 @@ def make_factorial():
     return automata_factorial(A, B, n) + destroy(B)
 
 if __name__ == "__main__":
+    """
+    How to run this program:
+
+    1) change the behaviour of the code below according to you
+       (what program do you want as your output?)
+    2) run "./circuits.py <output_filename>"
+    """
+
     if len(sys.argv) == 2:
         outfile = sys.argv[1]
         program = make_factorial()

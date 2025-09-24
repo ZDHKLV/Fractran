@@ -77,7 +77,7 @@ def run_tests(opt: bool = False):
         inp = 2**x * 3
         expected = 1
         test("clear", inp, expected, opt)
-    
+
     # euclidian_division
     for n in range(20):
         for d in range(1, n):
@@ -145,7 +145,7 @@ def run_tests(opt: bool = False):
             inp = 2**n * 3**o * 5
             expected = 3**collatz(n)
             test("collatz", inp, expected, opt)
-    
+
     # sqrt
 
     for n in range(20):
@@ -153,7 +153,7 @@ def run_tests(opt: bool = False):
             inp = 2**n * 3**o * 5
             expected = 2**n * 3**(int(n**0.5))
             test("sqrt", inp, expected, opt)
-    
+
     # factorial
 
     def factorial(n):
@@ -161,7 +161,7 @@ def run_tests(opt: bool = False):
         for k in range(2, n+1):
             out *= k
         return out
-    
+
     for n in range(1, 7):
         inp = 2**n * 3
         expected = 2**factorial(n)

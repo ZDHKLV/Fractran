@@ -342,6 +342,25 @@ def automata_sqrt(begin: State,
 
     return [ f for fs in automata for f in fs ]
 
+def automata_factorial(begin: State,
+                       end: State,
+                       n: Var) -> list[Fraction]:
+    """ [begin] (n) = [end] (n!) """
+    A, B = begin, end
+    E1, E2, E3, E4 = uniques(4)
+    m = unique()
+
+    automata = [
+        copy(A, E1, m, n),
+        decrement(E1, E2, m),
+        branch(E2, E3, B, m),
+        multiply_on(E3, E4, n, m),
+        decrement(E4, E2, m),
+        destroy(m)
+    ]
+
+    return [ f for fs in automata for f in fs ]
+
 def make_sum():
     i, o, A, B = uniques(4)
     return automata_sum(A, B, i, o) + destroy(B)
@@ -358,10 +377,14 @@ def make_sqrt():
     n, o, A, B = uniques(4)
     return automata_sqrt(A, B, n, o) + destroy(B)
 
+def make_factorial():
+    n, A, B = uniques(3)
+    return automata_factorial(A, B, n) + destroy(B)
+
 if __name__ == "__main__":
     if len(sys.argv) == 2:
         outfile = sys.argv[1]
-        program = make_sqrt()
+        program = make_factorial()
 
         with open(outfile, "w", encoding="utf-8") as file:
             for num, den in program:

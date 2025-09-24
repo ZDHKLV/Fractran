@@ -67,3 +67,7 @@ OUT: 2^0 * 3^collatz(n)
 [sqrt]
 IN: 2^n * 3^o * 5
 OUT: 2^n * 3^floor(sqrt(n))
+
+[factorial]
+IN: 2^n * 3 with n > 0
+OUT: 2^(n!)

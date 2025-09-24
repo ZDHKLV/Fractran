@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
         if debug:
             names = {}
-            for i in range(sys.argv.index("-D"), len(sys.argv)):
+            for i in range(sys.argv.index("-D")+1, len(sys.argv)):
                 a, b = sys.argv[i].split("=")
                 names[int(b)] = a
 
